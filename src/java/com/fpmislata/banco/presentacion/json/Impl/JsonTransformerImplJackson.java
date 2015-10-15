@@ -1,8 +1,8 @@
-package com.fpmislata.banco.presentacion.json.jsonImpl;
+package com.fpmislata.banco.presentacion.json.Impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fpmislata.banco.presentacion.JsonTransformer;
+import com.fpmislata.banco.presentacion.json.JsonTransformer;
 import java.io.IOException;
 
 /**
@@ -14,7 +14,6 @@ public class JsonTransformerImplJackson implements JsonTransformer {
     @Override
     public String objectToJson(Object o) {
         try {
-
             ObjectMapper objectMapper = new ObjectMapper();
 
             return objectMapper.writeValueAsString(o);

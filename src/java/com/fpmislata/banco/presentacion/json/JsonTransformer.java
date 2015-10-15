@@ -1,4 +1,4 @@
-package com.fpmislata.banco.presentacion;
+package com.fpmislata.banco.presentacion.json;
 
 /**
  *

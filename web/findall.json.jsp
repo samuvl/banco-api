@@ -1,6 +1,5 @@
-<%@page import="com.fpmislata.banco.presentacion.json.jsonImpl.JsonTransformerImplJackson"%>
-<%@page import="com.fpmislata.banco.presentacion.JsonTransformer"%>
-<%@page import="com.fpmislata.banco.presentacion.JsonTransformer"%>
+<%@page import="com.fpmislata.banco.presentacion.json.Impl.JsonTransformerImplJackson"%>
+<%@page import="com.fpmislata.banco.presentacion.json.JsonTransformer"%>
 <%@page import="com.fpmislata.banco.business.domain.EntidadBancaria"%>
 <%@page import="com.fpmislata.banco.business.service.impl.EntidadBancariaServiceImpl"%>
 <%@page import="java.util.List"%>
