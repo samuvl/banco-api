@@ -7,8 +7,6 @@ import com.fpmislata.banco.persistence.BussinessMessage;
 import com.fpmislata.banco.presentacion.json.JsonTransformer;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +29,11 @@ public class EntidadBancariaController {
     @Autowired
     JsonTransformer jsonTransformer;
 
-    @RequestMapping(value = {"/entidadbancaria"})
+    /*@RequestMapping(value = {"/entidadbancaria"})
     public void prueba(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse) throws IOException {
-
         String jsonEntidadBancaria = jsonTransformer.objectToJson(entidadBancariaService.get(3));
-
         httpServletResponse.getWriter().println(jsonEntidadBancaria);
-
-    }
+    }*/
 
     /**
      *
@@ -47,7 +42,7 @@ public class EntidadBancariaController {
      * @RequestBody requestbody
      * @param idEntidadBancaria
      */
-    @RequestMapping(value = "/entidadbancaria/{idEntidadBancaria}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/entidadbancaria/{idEntidadBancaria}"}, method = RequestMethod.GET, produces = "application/json")
     public void get(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
 
         try {
@@ -72,23 +67,36 @@ public class EntidadBancariaController {
         }
     }
 
-    /**
-     *
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @param jsonEntrada
-     */
-    @RequestMapping(value = "/entidadbancaria", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = {"/entidadbancaria"}, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
         try {
-            /*jsonEntrada = "{'idEntidadBancaria':15,'nombre':'HUALA'','codigoEntidad':693569,'fechaCreacion':'2013-09-25','direccion':'EN SU KELLY wweeCOLEGA','cif':'00024000'}";*/
             EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
             entidadBancariaService.insert(entidadBancaria);
-            String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.getWriter().println(jsonTransformer.objectToJson(entidadBancaria));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
+    
+    @RequestMapping(value = {"/entidadbancaria/{idEntidadBancaria}"}, method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
+
+        try{
+            EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
+            entidadBancariaService.update(entidadBancaria);
+            String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            httpServletResponse.getWriter().println(jsonSalida);
+            
+        } catch (Exception ex) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+        }
+}
 
     @RequestMapping(value = "/entidadbancaria/{idEntidadBancaria}", method = RequestMethod.DELETE, produces = "application/json")
     public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
@@ -96,21 +104,21 @@ public class EntidadBancariaController {
             entidadBancariaService.delete(idEntidadBancaria);
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
-        } catch (BussinessException ex) {
-            List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
-            String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
+        //} catch (BussinessException ex) {
+        //    List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
+        //    String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
 
-            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            httpServletResponse.setContentType("application/json; charset=UTF-8");
-            try {
-                httpServletResponse.getWriter().println(jsonSalida);
-            } catch (IOException ex1) {
-                Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+        //    httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        //    httpServletResponse.setContentType("application/json; charset=UTF-8");
+        //    try {
+        //      httpServletResponse.getWriter().println(jsonSalida);
+        //    } catch (IOException ex1) {
+        //        Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, null, ex1);
+        //    }
 
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
+            throw new RuntimeException(ex);
         }
     }
 }
