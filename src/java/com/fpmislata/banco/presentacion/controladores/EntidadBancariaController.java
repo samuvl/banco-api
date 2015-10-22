@@ -29,11 +29,6 @@ public class EntidadBancariaController {
     @Autowired
     JsonTransformer jsonTransformer;
 
-    /*@RequestMapping(value = {"/entidadbancaria"})
-    public void prueba(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse) throws IOException {
-        String jsonEntidadBancaria = jsonTransformer.objectToJson(entidadBancariaService.get(3));
-        httpServletResponse.getWriter().println(jsonEntidadBancaria);
-    }*/
 
     /**
      *
@@ -44,7 +39,6 @@ public class EntidadBancariaController {
      */
     @RequestMapping(value = {"/entidadbancaria/{idEntidadBancaria}"}, method = RequestMethod.GET, produces = "application/json")
     public void get(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
-
         try {
             EntidadBancaria entidadBancaria = entidadBancariaService.get(idEntidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
@@ -55,10 +49,15 @@ public class EntidadBancariaController {
     }
 
     @RequestMapping(value = "/entidadbancaria", method = RequestMethod.GET, produces = "application/json")
-    public void findall(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-
+    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
-            List<EntidadBancaria> entidadesBancarias = entidadBancariaService.findAll();
+            List<EntidadBancaria> entidadesBancarias;
+            String name = httpServletRequest.getParameter("nombre");
+            if (name == null) {
+                entidadesBancarias = entidadBancariaService.findAll();
+            } else {
+                entidadesBancarias = entidadBancariaService.findByNombre(name);
+            }
             String jsonSalida = jsonTransformer.objectToJson(entidadesBancarias);
             httpServletResponse.getWriter().println(jsonSalida);
 
@@ -72,18 +71,18 @@ public class EntidadBancariaController {
         try {
             EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
             entidadBancariaService.insert(entidadBancaria);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.getWriter().println(jsonTransformer.objectToJson(entidadBancaria));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
-    
+
     @RequestMapping(value = {"/entidadbancaria/{idEntidadBancaria}"}, method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
 
-        try{
+        try {
             EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
             entidadBancariaService.update(entidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
@@ -91,30 +90,18 @@ public class EntidadBancariaController {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
-            
+
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
         }
-}
+    }
 
     @RequestMapping(value = "/entidadbancaria/{idEntidadBancaria}", method = RequestMethod.DELETE, produces = "application/json")
     public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idEntidadBancaria") int idEntidadBancaria) {
         try {
             entidadBancariaService.delete(idEntidadBancaria);
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-        //} catch (BussinessException ex) {
-        //    List<BussinessMessage> bussinessMessage = ex.getBussinessMessages();
-        //    String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
-
-        //    httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        //    httpServletResponse.setContentType("application/json; charset=UTF-8");
-        //    try {
-        //      httpServletResponse.getWriter().println(jsonSalida);
-        //    } catch (IOException ex1) {
-        //        Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, null, ex1);
-        //    }
 
         } catch (Exception ex) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
