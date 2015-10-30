@@ -1,4 +1,4 @@
-package com.fpmislata.banco.presentacion.controladores;
+package com.fpmislata.banco.presentacion.controllers;
 
 import com.fpmislata.banco.business.domain.EntidadBancaria;
 import com.fpmislata.banco.business.service.EntidadBancariaService;
