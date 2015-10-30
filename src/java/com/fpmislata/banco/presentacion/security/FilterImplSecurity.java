@@ -7,8 +7,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class FilterImplSecurity implements Filter {
 
@@ -18,14 +16,19 @@ public class FilterImplSecurity implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-            System.out.println("Antes");
+      /*  String principal = "Permisos";
+        if (principal.equals("Permisos")) {
+            System.out.println("TRUE");
             filterChain.doFilter(servletRequest, servletResponse);
-            System.out.println("Despues");
+
+        } else {
+            System.out.println("FALSE");
+        }*/
 
     }
-        @Override
-        public void destroy() {
+
+    @Override
+    public void destroy() {
     }
-    
+
 }

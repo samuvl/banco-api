@@ -16,23 +16,23 @@ public class DatabaseMigrateContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("Iniciadooooo");
+    /*    System.out.println("Iniciadooooo");
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
         AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         autowireCapableBeanFactory.autowireBean(this);
         
         EntidadBancaria eb = new EntidadBancaria("hola", 111);
-        System.out.println(jsonTransformer.objectToJson(eb));
+        System.out.println(jsonTransformer.objectToJson(eb));*/
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("Destruidoooooo");
+   /*    System.out.println("Destruidoooooo");
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
         AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         autowireCapableBeanFactory.autowireBean(this);
         
         EntidadBancaria eb = new EntidadBancaria("xaop", 111);
-        System.out.println(jsonTransformer.objectToJson(eb));
+        System.out.println(jsonTransformer.objectToJson(eb));*/
     }
 }
