@@ -19,6 +19,8 @@
             classpath:applicationContext.xml
             classpath:applicationContext.service.xml
             classpath:applicationContext.dao.xml
+            classpath:applicationContext.persistence.xml
+
         </param-value>
     </context-param>
     
