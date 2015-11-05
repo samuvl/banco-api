@@ -12,27 +12,21 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class DatabaseMigrateContextListener implements ServletContextListener {
 
-   @Autowired
+    @Autowired
     DatabaseMigration databaseMigration;
 
-    @Autowired
-    DataSourceFactory dataSourceFactory;
-    
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Iniciadooooo");
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
         AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         autowireCapableBeanFactory.autowireBean(this);
-        DataSource dataSource = dataSourceFactory;
-        databaseMigration.migrate(dataSource, "com.fpmislata.banco.persistencia.migration.migrations");
 
+       databaseMigration.migrate();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
        System.out.println("Destruidoooooo");
-
-
     }
 }
