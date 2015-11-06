@@ -1,4 +1,4 @@
-package com.fpmislata.banco.presentacion.security;
+package com.fpmislata.banco.presentacion.security.impl;
 
 import java.io.IOException;
 import javax.servlet.Filter;

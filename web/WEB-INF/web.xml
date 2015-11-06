@@ -5,12 +5,10 @@
             30
         </session-timeout>
     </session-config>
-    
     <!--Para cargar varios applicationContext -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -23,23 +21,18 @@
     <listener>
         <listener-class>com.fpmislata.banco.presentacion.database.DatabaseMigrateContextListener</listener-class>
     </listener>
-    
-
-    
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-    
     <filter>
         <filter-name>Security</filter-name>
-        <filter-class>com.fpmislata.banco.presentacion.security.FilterImplSecurity</filter-class>
+        <filter-class>com.fpmislata.banco.presentacion.security.impl.FilterImplSecurity</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Security</filter-name>
