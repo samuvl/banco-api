@@ -1,9 +1,12 @@
 package com.fpmislata.banco.presentacion.security;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
- * @author alumno
+ * @author Samuel La
  */
 public interface WebSessionProvider {
-    
+    WebSession getWebSession(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }
