@@ -36,16 +36,14 @@ public class FilterImplSecurity implements Filter {
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(httpServletRequest.getServletContext());
         AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         autowireCapableBeanFactory.autowireBean(this);
-        
+
         WebSession webSession = webSessionProvider.getWebSession(httpServletRequest, httpServletResponse);
-        
-        if(webSession == null){
-            httpServletResponse.setStatus(403);
-        }
-        
-        if (authorization.isAuthorizedURL(webSession.getUser(), httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-        } else{ 
+
+        if (webSession == null) {
+            authorization.isAuthorizedURL(null, httpServletRequest.getRequestURI(), httpServletRequest.getMethod());
+        } else if (authorization.isAuthorizedURL(webSession.getUser(), httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else {
             httpServletResponse.setStatus(403);
         }
     }

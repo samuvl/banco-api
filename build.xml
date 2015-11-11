@@ -8,8 +8,41 @@
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
 <project name="banco-api" default="default" basedir=".">
-    <description>Builds, tests, and runs the project banco-api.</description>
+    <description>Builds, tests, and runs the project banco-api.</description>    
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="desplegarProduccion" depends="-enable-produccion, dist" > 
+        <echo> Desplegando... </echo>
+        <deploy url="http://172.16.205.109/manager/text" username="admin" password="admin" path="/pruebas" war="./dist/pruebas.war"/>   
+    </target>
+    
+    <property name="libs.CopyLibs.classpath" value="ant/lib/org-netbeans-modules-java-j2seproject-copylibstask.jar" />
+    <property name="j2ee.server.home" value="ant" />
+    
+    <path id="tomcat.classpath"> 
+        <fileset dir="./ant/lib" includes="*.jar" />
+    </path>
+    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tomcat.classpath" />
+    
+    
+    <!-- ANT CAMBIAR CONTEXT.XML para PRODUCCION -->
+    <!-- Si activamos la variable enableProduccion cambiaremos el context para produccion -->
+    
+    <target name="-enable-produccion" >
+        <property name="enableProduccion" value="patata" />
+    </target>
+    
+    <target name="-base-datos-produccion" if="enableProduccion"> 
+        <echo> Borrando y Renombrando... </echo>
+        <delete dir="build/web/META-INF/context.xml"/>
+        <move file="build/web/META-INF/context-produccion.xml" tofile="build/web/META-INF/context.xml"/>
+    </target>
+    
+    <!-- Para que se ejecute el target de renombrar y borrar-->
+    <target name="-pre-dist" depends="-base-datos-produccion"> 
+        
+    </target>    
+    
     <!--
 
     There exist several targets which are by default empty and which can be 
