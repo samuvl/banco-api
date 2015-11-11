@@ -32,19 +32,22 @@ public class FilterImplSecurity implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        
-                WebSession webSession = webSessionProvider.getWebSession(httpServletRequest, httpServletResponse);
 
-        
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(httpServletRequest.getServletContext());
         AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
         autowireCapableBeanFactory.autowireBean(this);
         
+        WebSession webSession = webSessionProvider.getWebSession(httpServletRequest, httpServletResponse);
+        
+        if(webSession == null){
+            httpServletResponse.setStatus(403);
+        }
         
         if (authorization.isAuthorizedURL(webSession.getUser(), httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
+        } else{ 
+            httpServletResponse.setStatus(403);
         }
-
     }
 
     @Override
