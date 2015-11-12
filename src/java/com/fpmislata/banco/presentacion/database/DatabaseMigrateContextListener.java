@@ -1,10 +1,8 @@
 package com.fpmislata.banco.presentacion.database;
 
 import com.fpmislata.banco.persistence.migration.DatabaseMigration;
-import javax.activation.DataSource;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.apache.tomcat.jdbc.pool.DataSourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;

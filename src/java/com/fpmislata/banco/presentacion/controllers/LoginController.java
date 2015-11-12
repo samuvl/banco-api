@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Samuel Lao
  */
 @Controller
-public class Login {
+public class LoginController {
 
     @Autowired
     PasswordManager passwordManager;
