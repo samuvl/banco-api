@@ -45,7 +45,8 @@ public class FilterImplSecurity implements Filter {
         if (webSession != null) {
             usuario = webSession.getUser();
         }
-        if (authorization.isAuthorizedURL(webSession.getUser(), httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
+        
+        if (authorization.isAuthorizedURL(usuario, httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             httpServletResponse.setStatus(403);
