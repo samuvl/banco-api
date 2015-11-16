@@ -5,7 +5,10 @@
             30
         </session-timeout>
     </session-config>
+    
+    <!-- ************************************ -->
     <!--Para cargar varios applicationContext -->
+    <!-- ************************************ -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -18,9 +21,17 @@
             classpath:applicationContext.persistence.xml
         </param-value>
     </context-param>
+    
+    <!-- ************************************ -->
+    <!--Database Migration Context -->
+    <!-- ************************************ -->
     <listener>
         <listener-class>com.fpmislata.banco.presentacion.database.DatabaseMigrateContextListener</listener-class>
     </listener>
+    
+    <!-- ************************************ -->
+    <!--Dispatcher Servlet controladores.... -->
+    <!-- ************************************ -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -31,6 +42,9 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
    
+   <!-- ************************************ -->
+   <!-- ...........Filtro de Seguridad -->
+   <!-- ************************************ -->
     <filter>
         <filter-name>Security</filter-name>
         <filter-class>com.fpmislata.banco.presentacion.security.FilterImplSecurity</filter-class>

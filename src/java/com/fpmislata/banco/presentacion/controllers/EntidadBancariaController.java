@@ -105,4 +105,5 @@ public class EntidadBancariaController {
             throw new RuntimeException(ex);
         }
     }
+    
 }
