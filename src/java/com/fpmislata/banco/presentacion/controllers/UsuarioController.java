@@ -1,4 +1,4 @@
-package com.fpmislata.banco.presentacion.controllers;
+/*package com.fpmislata.banco.presentacion.controllers;
 
 import com.fpmislata.banco.business.domain.Usuario;
 import com.fpmislata.banco.business.service.UsuarioService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  *
  * @author samu_
- */
+ *//*
 @Controller
 public class UsuarioController {
     @Autowired 
@@ -86,3 +86,4 @@ public class UsuarioController {
         }
     }
 }
+*/
