@@ -2,8 +2,13 @@ package com.fpmislata.banco.presentacion.controllers;
 
 import com.fpmislata.banco.business.domain.EntidadBancaria;
 import com.fpmislata.banco.business.service.EntidadBancariaService;
+import com.fpmislata.banco.core.BusinessException;
+import com.fpmislata.banco.core.BusinessMessage;
 import com.fpmislata.banco.presentacion.json.JsonTransformer;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +43,7 @@ public class EntidadBancariaController {
         try {
             EntidadBancaria entidadBancaria = entidadBancariaService.get(idEntidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
-            
+
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (Exception ex) {
@@ -56,7 +61,7 @@ public class EntidadBancariaController {
             } else {
                 entidadesBancarias = entidadBancariaService.findByNombre(name);
             }
-            
+
             String jsonSalida = jsonTransformer.objectToJson(entidadesBancarias);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -72,11 +77,30 @@ public class EntidadBancariaController {
             EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
             entidadBancariaService.insert(entidadBancaria);
 
-            /*httpServletResponse.setStatus(HttpServletResponse.SC_OK);*/
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonTransformer.objectToJson(entidadBancaria));
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+
+        } catch (BusinessException ex) {
+            List<BusinessMessage> bussinessMessage = ex.getBusinessMessages();
+            String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
+            System.out.println(jsonSalida);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+            } catch (IOException ex1) {
+                Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, "Error devolviendo Lista de Mensajes", ex1);
+            }
+        } catch (Exception ex1) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
+            try {
+                ex1.printStackTrace(httpServletResponse.getWriter());
+            } catch (IOException ex2) {
+                Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, "Error devolviendo la traza", ex2);
+            }
         }
     }
 
@@ -88,7 +112,7 @@ public class EntidadBancariaController {
             entidadBancariaService.update(entidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
 
-            /*httpServletResponse.setStatus(HttpServletResponse.SC_OK);*/
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
 
