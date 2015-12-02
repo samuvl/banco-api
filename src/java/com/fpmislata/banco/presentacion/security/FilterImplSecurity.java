@@ -2,8 +2,11 @@ package com.fpmislata.banco.presentacion.security;
 
 import com.fpmislata.banco.business.domain.Rol;
 import com.fpmislata.banco.business.domain.Usuario;
-import com.fpmislata.banco.persistence.security.Authorization;
+import com.fpmislata.banco.presentacion.controllers.EntidadBancariaController;
+import com.fpmislata.banco.security.Authorization;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -40,12 +43,15 @@ public class FilterImplSecurity implements Filter {
 
         WebSession webSession = webSessionProvider.getWebSession(httpServletRequest, httpServletResponse);
 
-        Usuario usuario = null;
+        Usuario usuario;
 
         if (webSession != null) {
             usuario = webSession.getUser();
+        } else {
+            usuario = null;
+            Logger.getLogger(FilterImplSecurity.class.getName()).log(Level.SEVERE, "No hay sesión");
         }
-        
+
         if (authorization.isAuthorizedURL(usuario, httpServletRequest.getRequestURI(), httpServletRequest.getMethod())) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {

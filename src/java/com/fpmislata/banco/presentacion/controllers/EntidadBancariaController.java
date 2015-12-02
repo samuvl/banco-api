@@ -43,7 +43,8 @@ public class EntidadBancariaController {
         try {
             EntidadBancaria entidadBancaria = entidadBancariaService.get(idEntidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
-
+            
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
         } catch (Exception ex) {
@@ -63,6 +64,8 @@ public class EntidadBancariaController {
             }
 
             String jsonSalida = jsonTransformer.objectToJson(entidadesBancarias);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
 
@@ -117,8 +120,8 @@ public class EntidadBancariaController {
             httpServletResponse.getWriter().println(jsonSalida);
 
         } catch (Exception ex) {
-            /*httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-             httpServletResponse.setContentType("text/plain; charset=UTF-8");*/
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            httpServletResponse.setContentType("text/plain; charset=UTF-8");
             throw new RuntimeException(ex);
         }
     }
@@ -131,7 +134,7 @@ public class EntidadBancariaController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
         } catch (Exception ex) {
-            /*httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);*/
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(ex);
         }
     }
