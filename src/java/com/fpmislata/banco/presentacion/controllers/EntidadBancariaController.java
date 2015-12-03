@@ -43,7 +43,7 @@ public class EntidadBancariaController {
         try {
             EntidadBancaria entidadBancaria = entidadBancariaService.get(idEntidadBancaria);
             String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
-            
+
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
             httpServletResponse.getWriter().println(jsonSalida);
@@ -87,7 +87,7 @@ public class EntidadBancariaController {
         } catch (BusinessException ex) {
             List<BusinessMessage> bussinessMessage = ex.getBusinessMessages();
             String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
-            System.out.println(jsonSalida);
+            //System.out.println(jsonSalida);
 
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -113,17 +113,33 @@ public class EntidadBancariaController {
         try {
             EntidadBancaria entidadBancaria = (EntidadBancaria) jsonTransformer.jsonToObject(jsonEntrada, EntidadBancaria.class);
             entidadBancariaService.update(entidadBancaria);
-            String jsonSalida = jsonTransformer.objectToJson(entidadBancaria);
 
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             httpServletResponse.setContentType("application/json; charset=UTF-8");
-            httpServletResponse.getWriter().println(jsonSalida);
+            httpServletResponse.getWriter().println(jsonTransformer.objectToJson(entidadBancaria));
 
-        } catch (Exception ex) {
+        } catch (BusinessException ex) {
+            List<BusinessMessage> bussinessMessage = ex.getBusinessMessages();
+            String jsonSalida = jsonTransformer.objectToJson(bussinessMessage);
+            System.out.println(jsonSalida);
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            httpServletResponse.setContentType("application/json; charset=UTF-8");
+            try {
+                httpServletResponse.getWriter().println(jsonSalida);
+            } catch (IOException ex1) {
+                Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, "Error devolviendo Lista de Mensajes", ex1);
+            }
+        } catch (Exception ex1) {
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             httpServletResponse.setContentType("text/plain; charset=UTF-8");
-            throw new RuntimeException(ex);
+            try {
+                ex1.printStackTrace(httpServletResponse.getWriter());
+            } catch (IOException ex2) {
+                Logger.getLogger(EntidadBancariaController.class.getName()).log(Level.SEVERE, "Error devolviendo la traza", ex2);
+            }
         }
+
     }
 
     @RequestMapping(value = "/entidadbancaria/{idEntidadBancaria}", method = RequestMethod.DELETE, produces = "application/json")
